@@ -1,0 +1,25 @@
+{
+  "name": "mqtt-customers",
+  "version": "1.0.0",
+  "description": "sample customer manager simulation",
+  "main": "customer-manager.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "manager": "node customer-manager.js",
+    "listener": "node customer-listener.js",
+    "writer": "node customer-writer.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mamund/mqtt-customers.git"
+  },
+  "author": "mamund",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mamund/mqtt-cusomers/issues"
+  },
+  "homepage": "https://github.com/mamund/mqtt-customers#readme",
+  "dependencies": {
+    "mqtt": "^4.1.0"
+  }
+}
