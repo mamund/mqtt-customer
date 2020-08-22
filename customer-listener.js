@@ -12,7 +12,7 @@ const client = mqtt.connect('mqtt://broker.hivemq.com');
 // send out connected msg
 client.on('connect', function() {
   client.subscribe('customer/connected');
-  client.subscribe('customer/wasChanged');
+  client.subscribe('customer/wasCreated');
   client.subscribe('customer/wasModified');
   client.subscribe('customer/wasRemoved');
 

@@ -1,8 +1,10 @@
-/* csutomer data manager */
+/* customer data manager */
 
+// setup 
 const mqtt = require('mqtt');
 const client = mqtt.connect('mqtt://broker.hivemq.com');
 
+// internal state
 var customers = [];
 var connected = false;
 
@@ -15,10 +17,43 @@ client.on('connect', function() {
 });
 
 // handle incoming
-// first, just echo
 client.on('message', function(topic, message) {
-  console.log('received message %s %s', topic, message);
+  switch(topic) {
+    case 'customer/willWrite':
+      handleWillWrite(message);
+      break;
+    case 'customer/connected':
+      break;
+    default:
+      console.log('no hander for topic %s',topic);
+      break;
+  }
 });
+
+// handle actions
+function handleWillWrite(message) {
+  var msg = JSON.parse(message||{});
+  var body = msg.body||{};
+  var action = msg.action||"unknown";
+
+  switch(action) {
+    case 'create':
+      console.log('creating %s',JSON.stringify(body));
+      client.publish('customer/wasCreated',JSON.stringify(body));
+      break;
+    case 'modify':
+      console.log('modifying %s', JSON.stringify(body));
+      client.publish('customer/wasModified', JSON.stringify(body));
+      break;
+    case 'remove':
+      console.log('removing %s', JSON.stringify(body));
+      client.publish('customer/wasRemoved', JSON.stringify(body));
+      break;
+    default:
+      console.log('action %s no recognized', action);
+      break;
+  }
+}
 
 // clean up on exit
 function handleAppExit(options, err) {

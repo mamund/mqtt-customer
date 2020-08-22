@@ -4,7 +4,8 @@ customer management via mqtt
 
 ## The Basics
  - `customer-manager.js` owns the data
- - `customer-client.js` wants to interact w/ the data
+ - `customer-listener.js` wants to be notified when data changes
+ = `customer-writer.js` wants to write data (planned)
 
 ### Message ID & Format
 Below is the `customer` message:
@@ -19,6 +20,7 @@ Below is the `customer` message:
 ### Events
 Below are the events for customer-manager records
 
+ * `connected` : indicates the service is connected to the network
  * `willWrite` : a write action will be attempted on the data store (see payload)
  * `wasCreated` : a new record was created (see payload)
  * `wasModified` : an existing record was modified (see payload)
@@ -37,13 +39,14 @@ Start up each of the services:
  * `node customer-writer`
 
 
-Then, on an open  terminal window
+Then, on an open terminal window
 
-  mqtt sub -t 'willWrite' -h 'test.mosquitto.org' -v
+  mqtt sub -t 'willWrite' -h 'broker.hivemq.com' -v
 
 On another
 
-  mqtt pub -t 'willWrite' -h 'test.mosquitto.org' -m '{action:"create",body: {id:"123",givenName:"mike",familyName:"amund",email:"mike@example.org"}}'
+  mqtt pub -t 'willWrite' -h 'broker.hivemq.com' -m '{"action":"create",body: {"id":"123","givenName":"mike","familyName":"amund","email":"mike@example.org"}}'
+
 
 
 
