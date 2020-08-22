@@ -3,9 +3,9 @@
 customer management via mqtt
 
 ## The Basics
- - `customer-manager.js` owns the data
- - `customer-listener.js` wants to be notified when data changes
- = `customer-writer.js` wants to write data (planned)
+ * `customer-manager.js` owns the data
+ * `customer-listener.js` wants to be notified when data changes
+ * `customer-writer.js` wants to write data (planned)
 
 ### Message ID & Format
 Below is the `customer` message:
@@ -32,20 +32,23 @@ Since the `customer-manager` (CM)  _owns_ the data, the CM will listen for any `
 Clients can subscribe to `was*` events to be notified when something has changed. Clients may also publish `willWrite` messages as a way to modify the existing data store.  
 
 ### CLI
-Start up each of the services:
+Start up each of the services (in this order):
 
- * `node customer-manager`
- * `node customer-listener`
- * `node customer-writer`
+ * `npm run manager`
+ * `npm run listener`
+ * `npm run writer`
 
+and watch the magic!
 
-Then, on an open terminal window
+Also, you can use the MQTT command line interface
 
-  mqtt sub -t 'willWrite' -h 'broker.hivemq.com' -v
+On an open terminal window, subscribe to the `customer/willWrite` topic:
 
-On another
+  `mqtt sub -t 'customer/willWrite' -h 'broker.hivemq.com' -v`
 
-  mqtt pub -t 'willWrite' -h 'broker.hivemq.com' -m '{"action":"create",body: {"id":"123","givenName":"mike","familyName":"amund","email":"mike@example.org"}}'
+On another terminal window, publish a message `willWrite` message:
+
+  `mqtt pub -t 'customer/willWrite' -h 'broker.hivemq.com' -m '{"action":"create",body: {"id":"123","givenName":"mike"}}'`
 
 
 
