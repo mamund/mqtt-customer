@@ -1,11 +1,15 @@
-/* listen to change events for customers  */
+/* listen to change events for customers  
+ *
+ * 2020-08 : mamund
+ *
+ */
 
 const mqtt = require('mqtt');
 const client = mqtt.connect('mqtt://broker.hivemq.com');
 
 /****
- * change events
- * wasCreated, wasModified, wasRemoved
+ * reg for events
+ * connected, wasCreated, wasModified, wasRemoved
  */
 
 // subscribe on startup
@@ -27,17 +31,9 @@ client.on('message', function(topic, message) {
 
 // clean up on exit
 function handleAppExit(options, err) {
-  if(err) {
-    console.log(err.stack);
-  }
-
-  if(options.cleanup) {
-    client.publish('customer/connected', 'false');
-  }
-
-  if(options.exit) {
-    process.exit();
-  }
+  if(err) {console.log(err.stack);}
+  if(options.cleanup) {client.publish('customer/connected', 'false');}
+  if(options.exit) {process.exit();}
 };
 
 // reg for cleanup
@@ -47,4 +43,7 @@ process.on('uncaughtException', handleAppExit.bind(null, {exit:true}));
 
 /*
  * EOF
-*/
+ *
+ */
+
+

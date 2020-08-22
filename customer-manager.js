@@ -1,4 +1,8 @@
-/* customer data manager */
+/* customer data manager 
+ *
+ * 2020-08 : mamund
+ *
+ */
 
 // setup 
 const mqtt = require('mqtt');
@@ -23,6 +27,7 @@ client.on('message', function(topic, message) {
       handleWillWrite(message);
       break;
     case 'customer/connected':
+      connected = true;
       break;
     default:
       console.log('no hander for topic %s',topic);
@@ -57,17 +62,9 @@ function handleWillWrite(message) {
 
 // clean up on exit
 function handleAppExit(options, err) {
-  if(err) {
-    console.log(err.stack);
-  }
-
-  if(options.cleanup) {
-    client.publish('customer/connected', 'false');
-  }
-
-  if(options.exit) {
-    process.exit();
-  }
+  if(err) {console.log(err.stack);}
+  if(options.cleanup) {client.publish('customer/connected', 'false');}
+  if(options.exit) {process.exit();}
 };
 
 // reg for cleanup
@@ -77,17 +74,7 @@ process.on('uncaughtException', handleAppExit.bind(null, {exit:true}));
 
 /*
  * EOF
-*
+ *
+ */
 
-/*
-function handleGarageConnected(message) {
-  console.log('garage connected state is %s', message);
-  connected = (message.toString() === 'true');
-};
-
-function handleGarageState(message) {
-  console.log('garage state update is %s', message);
-  garageState = message;
-};
-*/
 
