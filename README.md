@@ -5,7 +5,7 @@ customer management via mqtt
 ## The Basics
  * `customer-manager.js` owns the data
  * `customer-listener.js` wants to be notified when data changes
- * `customer-writer.js` wants to write data (planned)
+ * `customer-writer.js` wants to write data 
 
 ### Message ID & Format
 Below is the `customer` message:
